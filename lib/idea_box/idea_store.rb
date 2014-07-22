@@ -1,26 +1,11 @@
 require 'yaml/store'
 
-class Idea
-  attr_reader :title, :description
-
-  def initialize(attributes)
-    @title = attributes["title"]
-    @description = attributes["description"]
-  end
-
-  def save
-    database.transaction do |db|
-      db['ideas'] ||= []
-      db['ideas'] << {"title" => title, "description" => description}
-    end
-  end
+class IdeaStore
+  set :method_override, true
+  set :root, 'lib/app'
 
   def self.database
-    @database ||= YAML::Store.new "ideabox"
-  end
-
-  def database
-    Idea.database
+    @database ||= YAML::Store.new ('db/ideabox')
   end
 
   def self.all
@@ -57,4 +42,12 @@ class Idea
       database['ideas'][id] = data
     end
   end
+
+  def self.create(attributes)
+    database.transaction do
+      database['ideas'] ||= []
+      database['ideas'] << attributes
+    end
+  end
+
 end
