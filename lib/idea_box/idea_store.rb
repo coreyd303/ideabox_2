@@ -1,12 +1,17 @@
 require 'yaml/store'
 
 class IdeaStore
+  def self.create(attributes)
+    database.transaction do
+      database['ideas'] << attributes
+    end
+  end
 
   def self.database
-    return @database if @database #what? why?
+    return @database if @database
 
-    @database ||= YAML::Store.new ('db/ideabox')
-    @database.transactions do
+    @database = YAML::Store.new('db/ideabox')
+    @database.transaction do
       @database['ideas'] ||= []
     end
     @database
@@ -23,12 +28,6 @@ class IdeaStore
   def self.raw_ideas
     database.transaction do |db|
       db['ideas'] || []
-    end
-  end
-
-  def self.delete(position)
-    database.transaction do
-      database['ideas'].delete_at(position)
     end
   end
 
@@ -49,9 +48,9 @@ class IdeaStore
     end
   end
 
-  def self.create(attributes)
+  def self.delete(position)
     database.transaction do
-      database['ideas'] << data
+      database['ideas'].delete_at(position)
     end
   end
 end

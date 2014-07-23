@@ -1,5 +1,6 @@
 class Idea
   include Comparable
+
   attr_reader :title, :description, :rank, :id
 
   def initialize(attributes = {})
@@ -10,7 +11,7 @@ class Idea
   end
 
   def save
-    IdeaStore.create("title" => title, "description" => description, "rank" => rank)
+    IdeaStore.create(to_h)
   end
 
   def to_h

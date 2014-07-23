@@ -1,14 +1,14 @@
+require 'bundler'
+Bundler.require
 require 'idea_box'
-require 'sinatra/base'
-require 'sinatra/reloader'
 
 class IdeaBoxApp < Sinatra::Base
+  set :method_override, true
+  set :root, 'lib/app'
+
   configure :development do
     register Sinatra::Reloader
   end
-
-  set :method_override, true
-  set :root, 'lib/app'
 
   not_found do
     erb :error
@@ -23,8 +23,10 @@ class IdeaBoxApp < Sinatra::Base
     redirect '/'
   end
 
-  delete '/:id' do |id|
-    IdeaStore.delete(id.to_i)
+  post '/:id/like' do |id|
+    idea = IdeaStore.find(id.to_i)
+    idea.like!
+    IdeaStore.update(id.to_i, idea.to_h)
     redirect '/'
   end
 
@@ -38,10 +40,8 @@ class IdeaBoxApp < Sinatra::Base
     redirect '/'
   end
 
-  post '/:id/like' do |id|
-    idea = IdeaStore.find(id.to_i)
-    idea.like!
-    IdeaStore.update(id.to_i, idea.to_h)
+  delete '/:id' do |id|
+    IdeaStore.delete(id.to_i)
     redirect '/'
   end
 end
