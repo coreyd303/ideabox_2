@@ -1,17 +1,23 @@
 require 'yaml/store'
 
 class IdeaStore
-  set :method_override, true
-  set :root, 'lib/app'
 
   def self.database
+    return @database if @database #what? why?
+
     @database ||= YAML::Store.new ('db/ideabox')
+    @database.transactions do
+      @database['ideas'] ||= []
+    end
+    @database
   end
 
   def self.all
-    raw_ideas.map do |data|
-      Idea.new(data)
+    ideas = []
+    raw_ideas.each_with_index do |data, i|
+      ideas << Idea.new(data.merge("id" => i))
     end
+    ideas
   end
 
   def self.raw_ideas
@@ -28,7 +34,7 @@ class IdeaStore
 
   def self.find(id)
     raw_idea = find_raw_idea(id)
-    Idea.new(find_raw_idea(id))
+    Idea.new(raw_idea.merge("id" => id))
   end
 
   def self.find_raw_idea(id)
@@ -45,9 +51,7 @@ class IdeaStore
 
   def self.create(attributes)
     database.transaction do
-      database['ideas'] ||= []
-      database['ideas'] << attributes
+      database['ideas'] << data
     end
   end
-
 end
