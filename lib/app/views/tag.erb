@@ -1,0 +1,15 @@
+<b><h3> Ideas by Tag </h3></b>
+<ul>
+  <% ideas.each do |idea| %>
+    <li>
+      <b><%= idea.title %></b> | Rank: ( <%= idea.id %> )
+      <br/>
+      <%= idea.description %>
+      tags: <% idea.tag.each do |tag| %>
+        <a href="/<%= tag %>/tag"><%= tag %></a>
+      <% end %>
+      <br/>
+      <hr/>        
+    </li>
+  <% end %>
+</ul> 

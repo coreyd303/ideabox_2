@@ -1,2 +1,64 @@
 ---
-ideas: []
+ideas:
+- title: Crossfit Crazy
+  description: Go for 5 days!  Sunday --> Tuesday, Thursday --> Friday || Monday -->
+    Wednesday & Friday --> Saturday. Just to see how it makes you feel. Train hard,
+    eat big, and go to bed by 9:00 each night!
+  tag:
+  - Warrior
+  rank: 1
+- title: Run after class
+  description: Try a short run w/dogs when you get home, no more than 30 mins. Say
+    2 times per week. See if you can't drive up your energy and clear your head after
+    a long day!
+  tag:
+  - Warrior
+  rank: 0
+- title: Let's try a picture
+  description: just because
+  tag:
+  - tag
+  rank: 0
+- title: Example
+  description: thing
+  tag:
+  - blah
+  rank: 0
+  user_file: 
+- title: asdf
+  description: asdf
+  tag: []
+  rank: 0
+  user_file: 
+- title: alkdjf
+  description: ;alsdfkj
+  tag: []
+  rank: 0
+  user_file: 
+- title: askdlfhj
+  description: ''
+  tag: []
+  rank: 0
+  user_file: 
+- title: filetest
+  description: blah
+  tag:
+  - blah
+  rank: 0
+  user_file: 
+- title: try again
+  description: jf
+  tag:
+  - kjdf
+  rank: 0
+  user_file: 
+- title: aklsdfj
+  description: asld;fkj
+  tag:
+  - asd;lfkj
+  rank: 0
+- title: dslfkj
+  description: ;laksdjf;
+  tag:
+  - a;sldkfj
+  rank: 0

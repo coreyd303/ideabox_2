@@ -1,0 +1,34 @@
+%form{:action => "/", :method => "POST"}
+  %p
+    %b Mydea Box!
+  = succeed ":Mydea" do
+    %input{:name => "idea[title]", :type => "text"}/
+  %br/
+  %textarea{:name => "idea[description]"}/
+  \:Description
+  %br/
+  = succeed ":Tag(s)" do
+    %input{:name => "idea[tag]", :type => "text"}/
+  %br/
+  %input{:type => "submit", :value => "Create Brilliance"}/
+%h2 Mydeas!
+%ul
+  - ideas.each do |idea|
+    %li
+      %b= idea.title
+      %form{:action => "/#{idea.id}/like", :method => "POST", :style => "display: inline"}
+        %input{:type => "submit", :value => "like"}/
+      %br/
+      %hr
+        = idea.description
+        %br/
+        %b rank:
+        = idea.rank
+        %br/
+        %b tag(s):
+        - idea.tag.each do |tag|
+          %a{:href => "/#{tag}/tag"}= tag
+        %a{:href => "/#{idea.id}/edit"} Edit Idea
+        %form{:action => "/#{idea.id}", :method => "POST"}
+          %input{:name => "_method", :type => "hidden", :value => "DELETE"}
+            %input{:type => "submit", :value => "delete"}/

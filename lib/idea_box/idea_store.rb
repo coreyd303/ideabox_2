@@ -1,9 +1,12 @@
 require 'yaml/store'
 
 class IdeaStore
+
   def self.create(attributes)
+    idea = Idea.create(attributes)
     database.transaction do
-      database['ideas'] << attributes
+      database['ideas'] << idea.to_h
+
     end
   end
 
@@ -17,6 +20,8 @@ class IdeaStore
     @database
   end
 
+  # is a pattern (trickier, b/c it requires chaining and going through an enumerator)
+  # I want to put the results of my data merge into an array
   def self.all
     ideas = []
     raw_ideas.each_with_index do |data, i|
@@ -52,5 +57,31 @@ class IdeaStore
     database.transaction do
       database['ideas'].delete_at(position)
     end
+  end
+
+  def self.tag
+    tag = all.collect(&:tag)
+    tag.flatten.uniq!.sort
+  end
+
+  # tag_to_idea
+  def self.all_by_tag
+    ideas = {}
+    tag.each.flat_map { |tag| ideas[tag] = find_by_tag(tag) }
+    ideas
+  end
+
+  def self.find_by_tag(tag)
+    all.find_all { |idea| idea.tag.include? (tag) }
+  end
+
+  def self.save_user_file(user_file)
+   upload = File.new("public/#{Time.now}_#{File.basename(user_file[:filename])}", "w") 
+   upload.write(user_file[:tempfile].read)
+   upload.path
+  end
+
+  def self.find_user_file(user_file)
+    
   end
 end

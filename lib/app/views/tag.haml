@@ -1,0 +1,12 @@
+%h3 Tags
+%p Your tags
+%ul
+  - ideas.each do |idea|
+    %li
+      =idea.title 
+      (#{idea.id})
+      %br/
+      =idea.description
+      tags: 
+      - idea.tag.each do |tag|
+        %a{href => "/#{tag}/tag"}= tag

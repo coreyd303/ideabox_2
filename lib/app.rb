@@ -1,10 +1,14 @@
 require 'bundler'
 Bundler.require
 require 'idea_box'
+require 'haml'
+require 'simplecov'
+Simplecov.start
 
 class IdeaBoxApp < Sinatra::Base
   set :method_override, true
   set :root, 'lib/app'
+  #set :public_folder, public 
 
   configure :development do
     register Sinatra::Reloader
@@ -19,7 +23,8 @@ class IdeaBoxApp < Sinatra::Base
   end
 
   post '/' do
-    IdeaStore.create(params[:idea])
+    puts(params[:idea].inspect)
+    IdeaStore.create(Idea.new(params[:idea]).to_h)
     redirect '/'
   end
 
@@ -33,6 +38,10 @@ class IdeaBoxApp < Sinatra::Base
   get '/:id/edit' do |id|
     idea = IdeaStore.find(id.to_i)
     erb :edit, locals: {idea: idea}
+  end
+
+  get '/:tag/tag' do |tag|
+    erb :tag, locals: {ideas: IdeaStore.find_by_tag(tag)}
   end
 
   put '/:id' do |id|

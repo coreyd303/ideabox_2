@@ -1,9 +1,20 @@
-<form action='/' method='POST'>
+√ When you create an idea you can specify an image
+-- When you create a resource for an idea you can specify an image
+√ You are able to upload an image that will be associated with the idea
+<!-- When viewing an idea the image is displayed within the idea -->
+-- When viewing a resource the image is displayed within that resource
+
+<form action='/' enctype="multipart/form-data" method='POST'>
   <p>
-    Mydea Box!:
+    <b>Mydea Box!</b>
   </p>
-  <input type='text' name='idea[title]'/><br/>
-  <textarea name='idea[description]'></textarea><br/>
+  <input type='text' name='idea[title]'/> &larr; Mydea<br/>
+  <textarea name='idea[description]'/></textarea> &larr; Details<br/>
+  <input type='text' name='idea[tag]'/> &larr; Tag(s)<br/>
+  <p>
+  <b>Upload something to support your idea!</b><br/>
+  <input type="file" name="idea[user_file]" /><br/>
+  </p>
   <input type='submit' value='Create Brilliance'/>
 </form>
 
@@ -12,12 +23,21 @@
 <ul>
   <% ideas.each do |idea| %>
     <li>
-      <h3><%= idea.title %>:</h3>
+      <b><%= idea.title %></b>
+        <form action='/<%= idea.id %>/like' method='POST' style="display: inline">
+          <input type='submit' value="like"/>
+        </form>
+      <br/><hr>
       <%= idea.description %><br/>
-      <form action='/<%= idea.id %>/like' method='POST' style="display: inline">
-        <input type='submit' value="+"/>
-      </form>
-      <a href="/<%= idea.id %>/edit">Change your mind</a>
+      <b>rank:</b> <%= idea.rank %> <br/>
+      <b>tag(s):</b> <% idea.tag.each do |tag| %>
+      <a href="/<%= tag %>/tag"><%= tag %></a>
+      <% end %>
+      <br/>
+      <b>file:</b><br/>
+      <img src= "<%= idea.user_file %>" alt= "user upload not found" />
+      <br/>
+      <a href="/<%= idea.id %>/edit"> Edit Idea</a>
       <form action='/<%= idea.id %>' method='POST'>
         <input type="hidden" name="_method" value="DELETE">
         <input type='submit' value="delete"/>
